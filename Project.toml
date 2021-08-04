@@ -1,0 +1,4 @@
+name = "PolyNets"
+uuid = "5be6c4c4-c020-4e35-8aa5-a362b8d9d94b"
+authors = ["tomas votroubek <tomas.votroubek@outlook.com>"]
+version = "0.1.0"
