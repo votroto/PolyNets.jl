@@ -1,5 +1,7 @@
 module PolyNets
 
-greet() = print("Hello World!")
+export hierarchy
+
+include("sdp.jl")
 
 end # module
