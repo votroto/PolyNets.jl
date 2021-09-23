@@ -7,7 +7,7 @@ using Test
 function verify_br(ws, ms, ps, ss, o; N=axes(ss, 1))
 	for i in N
 		br = best_response_value(ps[i], ss[i], ms[N .!= i]; order=o)
-		@test isapprox(ws[i], br, atol=1e-2)
+		@test isapprox(ws[i], br, atol=2e-2)
 	end
 end
 
@@ -17,6 +17,10 @@ end
 	prettyprint(ws, ms, ps, ss)
 
 	ws, ms, ps, ss, o = example_1()
+	verify_br(ws, ms, ps, ss, o)
+	prettyprint(ws, ms, ps, ss)
+
+	ws, ms, ps, ss, o = example_2()
 	verify_br(ws, ms, ps, ss, o)
 	prettyprint(ws, ms, ps, ss)
 end

@@ -5,14 +5,14 @@ using JuMP
 
 function sep∫(p, mus)
 	# Exploit separability. Otherwise we'd have to do pre-processing to get rid
-	# of quadratic terms induced by the 0th moments.
-	(⊂)(X, Y) = all(X .∈ Ref(Y))
+	# of quadratic terms induced by the 0th moments (which equal 1).
+	(⊂)(X, Y) = any(X .∈ Ref(Y))
 	_inner(term) = ∫(term, filter(m -> m.vars ⊂ effective_variables(term), mus))
 
 	sum(_inner, terms(p))
 end
 
-function hierarchy(u, S; optimizer, order=maximum(maxdegree.(u)), N=axes(S, 1), silent=true)
+function hierarchy(u, S; optimizer, order=maximum(maxdegree.(u)), N=axes(S, 1))
 	m = SOSModel(optimizer)
 
 	@variable(m, w[N])
@@ -23,7 +23,6 @@ function hierarchy(u, S; optimizer, order=maximum(maxdegree.(u)), N=axes(S, 1), 
 	@constraint(m, [i in N], sep∫(u[i], μ[N.!=i]) <= w[i], domain=S[i], maxdegree=order)
 	@constraint(m, [i in N], ∫(1, μ[i]) == 1)
 
-	set_silent(m)
 	optimize!(m)
 
 	value.(w), value.(μ)
